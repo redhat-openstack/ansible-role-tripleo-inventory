@@ -1,2 +1,111 @@
 ---
 # tasks file for ansible-role-tripleo-inventory
+
+- name: copy get-overcloud-nodes.py to undercloud
+  template: >
+      src=get-overcloud-nodes.py.j2
+      dest={{ working_dir }}/get-overcloud-nodes.py
+      mode=0755
+
+- name: fetch overcloud node names and IPs
+  shell: >
+      source {{ working_dir }}/stackrc;
+      python {{ working_dir }}/get-overcloud-nodes.py
+  register: registered_overcloud_nodes
+  ignore_errors: yes
+
+- name: list the overcloud nodes
+  debug: var=registered_overcloud_nodes.stdout
+  ignore_errors: yes
+
+- name: fetch the undercloud ssh key
+  fetch: >
+    src={{ working_dir }}/.ssh/id_rsa
+    dest={{ local_working_dir }}/id_rsa_overcloud
+    flat=yes
+    mode=0400
+
+- name: add each overcloud controller node to ansible
+  with_dict: registered_overcloud_nodes.stdout
+  ignore_errors: yes
+  add_host:
+    name={{ item.key }}
+    groups=overcloud,controller
+    ansible_ssh_host={{ item.key }}
+    ansible_fqdn={{ item.value }}
+    ansible_ssh_user="heat-admin"
+    ansible_ssh_private_key_file="{{ lookup('env', 'PWD') }}/id_rsa_undercloud"
+  when: item.key.startswith('overcloud-controller')
+
+- name: add each overcloud compute node to ansible
+  with_dict: registered_overcloud_nodes.stdout
+  ignore_errors: yes
+  add_host:
+    name={{ item.key }}
+    groups=overcloud,compute
+    ansible_ssh_host={{ item.key }}
+    ansible_fqdn={{ item.value }}
+    ansible_ssh_user="heat-admin"
+    ansible_ssh_private_key_file="{{ lookup('env', 'PWD') }}/id_rsa_undercloud"
+  when: item.key.startswith('overcloud-compute') or item.key.startswith('overcloud-novacompute')
+
+- name: add each overcloud ceph node to ansible
+  with_dict: registered_overcloud_nodes.stdout
+  ignore_errors: yes
+  add_host:
+    name={{ item.key }}
+    groups=overcloud,ceph
+    ansible_ssh_host={{ item.key }}
+    ansible_fqdn={{ item.value }}
+    ansible_ssh_user="heat-admin"
+    ansible_ssh_private_key_file="{{ lookup('env', 'PWD') }}/id_rsa_undercloud"
+  when: item.key.startswith('overcloud-ceph')
+
+- name: add each overcloud swift node to ansible
+  with_dict: registered_overcloud_nodes.stdout
+  ignore_errors: yes
+  add_host:
+    name={{ item.key }}
+    groups=overcloud,swift
+    ansible_ssh_host={{ item.key }}
+    ansible_fqdn={{ item.value }}
+    ansible_ssh_user="heat-admin"
+    ansible_ssh_private_key_file="{{ lookup('env', 'PWD') }}/id_rsa_undercloud"
+  when: item.key.startswith('overcloud-objectstorage')
+
+- name: get undercloud ip
+  shell: /usr/sbin/ip addr show eth0 | grep -Po 'inet \K[\d.]+'
+  register: registered_undercloud_ip
+
+- name: set_fact for undercloud ip #required for regeneration of ssh.config.ansible
+  set_fact: undercloud_ip={{ registered_undercloud_ip }}
+
+- name: Add undercloud vm to inventory
+  add_host:
+    name: undercloud
+    groups: undercloud
+    ansible_host: undercloud
+    ansible_fqdn: undercloud
+    ansible_user: stack
+    ansible_private_key_file: "{{ undercloud_key }}"
+
+- name: set_fact for ansible_user #required for regeneration of ssh.config.ansible
+  set_fact: ansible_user={{ undercloud_ansible_user }}
+
+- name: set undercloud ssh proxy command #required for regeneration of ssh.config.ansible
+  set_fact: undercloud_ssh_proxy_command="ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no
+      -o ConnectTimeout=60 -i {{ hostvars[groups['virthost'][0]].ansible_private_key_file }}
+      {{ ansible_user }}@{{ hostvars[groups['virthost'][0]].ansible_host }}
+      -W {{ undercloud_ip.stdout }}:22"
+
+- name: create inventory from template
+  delegate_to: localhost
+  template: >
+    src=inventory.j2
+    dest="{{ local_working_dir }}/hosts"
+
+- name: regenerate ssh config
+  delegate_to: localhost
+  template: >
+    src=ssh_config.j2
+    dest={{ local_working_dir }}/ssh.config.ansible mode=0755

@@ -1,0 +1,41 @@
+{% set ssh_user = ansible_user|default(ansible_user_id, True) %}
+{% if ansible_host is not defined or ansible_host == 'localhost' %}
+{% set ssh_host = inventory_hostname %}
+{% else %}
+{% set ssh_host = ansible_host %}
+{% endif %}
+
+Host undercloud-root
+    ProxyCommand {{ undercloud_ssh_proxy_command }}
+    IdentityFile {{ local_working_dir }}/id_rsa_undercloud
+    User root
+    StrictHostKeyChecking no
+    UserKnownHostsFile=/dev/null
+
+Host undercloud
+    ProxyCommand {{ undercloud_ssh_proxy_command }}
+    IdentityFile {{ local_working_dir }}/id_rsa_undercloud
+    User stack
+    StrictHostKeyChecking no
+    UserKnownHostsFile=/dev/null
+
+Host undercloud-from-virthost
+    Hostname {{ undercloud_ip.stdout }}
+    IdentityFile ~/.ssh/id_rsa
+    IdentitiesOnly yes
+    User root
+    StrictHostKeyChecking no
+
+
+{% if groups["overcloud"] is defined %}
+{% for host in groups["overcloud"] %}
+
+Host {{ host }}
+    ProxyCommand ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -o ConnectTimeout=60 -F {{ local_working_dir }}/ssh.config.ansible undercloud -W {{ hostvars[host].ansible_fqdn }}:22
+    IdentityFile {{ local_working_dir }}/id_rsa_overcloud
+    User heat-admin
+    StrictHostKeyChecking no
+    UserKnownHostsFile=/dev/null
+
+{% endfor %}
+{% endif %}
