@@ -1,0 +1,7 @@
+Verified+1: mathieu bultel <mat.bultel@gmail.com>
+Code-Review+2: mathieu bultel <mat.bultel@gmail.com>
+Submitted-by: mathieu bultel <mat.bultel@gmail.com>
+Submitted-at: Fri, 22 Apr 2016 11:39:45 -0400
+Reviewed-on: https://review.gerrithub.io/273977
+Project: redhat-openstack/ansible-role-tripleo-inventory
+Branch: refs/heads/master
