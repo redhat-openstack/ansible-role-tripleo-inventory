@@ -74,7 +74,7 @@
   when: item.key.startswith('overcloud-objectstorage')
 
 - name: get undercloud ip
-  shell: /usr/sbin/ip addr show eth0 | grep -Po 'inet \K[\d.]+'
+  shell: /usr/sbin/ip addr show {{ ansible_default_ipv4.interface }} | grep -Po 'inet \K[\d.]+'
   register: registered_undercloud_ip
 
 - name: set_fact for undercloud ip #required for regeneration of ssh.config.ansible
