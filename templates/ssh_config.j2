@@ -5,6 +5,17 @@
 {% set ssh_host = ansible_host %}
 {% endif %}
 
+{% if groups["virthost"] is defined %}
+
+Host virthost
+    Hostname {{ hostvars[groups['virthost'][0]].ansible_host }}
+    IdentityFile {{ local_working_dir }}/id_rsa_virt_host
+    User {{ ansible_user }}
+    StrictHostKeyChecking no
+    UserKnownHostsFile=/dev/null
+
+{% endif %}
+
 Host undercloud-root
     ProxyCommand {{ undercloud_ssh_proxy_command }}
     IdentityFile {{ local_working_dir }}/id_rsa_undercloud
@@ -19,14 +30,6 @@ Host undercloud
     StrictHostKeyChecking no
     UserKnownHostsFile=/dev/null
 
-Host undercloud-from-virthost
-    Hostname {{ undercloud_ip.stdout }}
-    IdentityFile ~/.ssh/id_rsa
-    IdentitiesOnly yes
-    User root
-    StrictHostKeyChecking no
-
-
 {% if groups["overcloud"] is defined %}
 {% for host in groups["overcloud"] %}
 
@@ -39,3 +42,5 @@ Host {{ host }}
 
 {% endfor %}
 {% endif %}
+
+
