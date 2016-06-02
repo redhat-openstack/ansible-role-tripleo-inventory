@@ -1,22 +1,25 @@
 ---
 # tasks file for ansible-role-tripleo-inventory
 
+#required for liberty based deployments
 - name: copy get-overcloud-nodes.py to undercloud
   template: >
       src=get-overcloud-nodes.py.j2
       dest={{ working_dir }}/get-overcloud-nodes.py
       mode=0755
+  when: inventory == "all"
 
+#required for liberty based deployments
 - name: fetch overcloud node names and IPs
   shell: >
       source {{ working_dir }}/stackrc;
       python {{ working_dir }}/get-overcloud-nodes.py
   register: registered_overcloud_nodes
-  ignore_errors: yes
+  when: inventory == "all"
 
 - name: list the overcloud nodes
   debug: var=registered_overcloud_nodes.stdout
-  ignore_errors: yes
+  when: inventory == "all"
 
 - name: fetch the undercloud ssh key
   fetch: >
@@ -24,6 +27,7 @@
     dest={{ local_working_dir }}/id_rsa_overcloud
     flat=yes
     mode=0400
+  when: inventory == "all"
 
 - name: add each overcloud controller node to ansible
   with_dict: registered_overcloud_nodes.stdout
@@ -35,7 +39,7 @@
     ansible_fqdn={{ item.value }}
     ansible_user="heat-admin"
     ansible_private_key_file="{{ lookup('env', 'PWD') }}/id_rsa_overcloud"
-  when: item.key.startswith('overcloud-controller')
+  when: item.key.startswith('overcloud-controller') and inventory == "all"
 
 - name: add each overcloud compute node to ansible
   with_dict: registered_overcloud_nodes.stdout
@@ -47,7 +51,7 @@
     ansible_fqdn={{ item.value }}
     ansible_user="heat-admin"
     ansible_private_key_file="{{ lookup('env', 'PWD') }}/id_rsa_overcloud"
-  when: item.key.startswith('overcloud-compute') or item.key.startswith('overcloud-novacompute')
+  when: item.key.startswith('overcloud-compute') or item.key.startswith('overcloud-novacompute') and inventory == "all"
 
 - name: add each overcloud ceph node to ansible
   with_dict: registered_overcloud_nodes.stdout
@@ -59,7 +63,7 @@
     ansible_fqdn={{ item.value }}
     ansible_user="heat-admin"
     ansible_private_key_file="{{ lookup('env', 'PWD') }}/id_rsa_overcloud"
-  when: item.key.startswith('overcloud-ceph')
+  when: item.key.startswith('overcloud-ceph') and inventory == "all"
 
 - name: add each overcloud swift node to ansible
   with_dict: registered_overcloud_nodes.stdout
@@ -71,25 +75,20 @@
     ansible_fqdn={{ item.value }}
     ansible_user="heat-admin"
     ansible_private_key_file="{{ lookup('env', 'PWD') }}/id_rsa_overcloud"
-  when: item.key.startswith('overcloud-objectstorage')
+  when: item.key.startswith('overcloud-objectstorage') and inventory == "all"
 
+#this is required until the undercloud ip is included in the undercloud hostvars
 - name: get undercloud ip
   shell: /usr/sbin/ip addr show eth0 | grep -Po 'inet \K[\d.]+'
   register: registered_undercloud_ip
+  delegate_to: undercloud
 
-- name: set_fact for undercloud ip #required for regeneration of ssh.config.ansible
+#required for regeneration of ssh.config.ansible
+- name: set_fact for undercloud ip
   set_fact: undercloud_ip={{ registered_undercloud_ip }}
 
-- name: Add undercloud vm to inventory
-  add_host:
-    name: undercloud
-    groups: undercloud
-    ansible_host: undercloud
-    ansible_fqdn: undercloud
-    ansible_user: stack
-    ansible_private_key_file: "{{ undercloud_key }}"
-
-- name: set undercloud ssh proxy command #required for regeneration of ssh.config.ansible
+#required for regeneration of ssh.config.ansible
+- name: set undercloud ssh proxy command
   set_fact: undercloud_ssh_proxy_command="ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no
       -o ConnectTimeout=60 -i {{ hostvars[groups['virthost'][0]].ansible_private_key_file }}
       {{ ansible_user }}@{{ hostvars[groups['virthost'][0]].ansible_host }}
@@ -106,3 +105,18 @@
   template: >
     src=ssh_config.j2
     dest={{ local_working_dir }}/ssh.config.ansible mode=0755
+
+- name: regenerate ssh config for ssh connections from the virthost
+  template: >
+    src=ssh_config_localhost.j2
+    dest={{ working_dir }}/ssh.local.config.ansible mode=0755
+  delegate_to: virthost
+
+#The overcloud key is only available when inventory is called on the overcloud
+- name: transfer the ssh keys to the virthost
+  shell: "scp -F {{ local_working_dir }}/ssh.config.ansible {{ local_working_dir }}/id_rsa_* virthost:{{ working_dir }}"
+  when: inventory == "all"
+  delegate_to: localhost
+
+
+
