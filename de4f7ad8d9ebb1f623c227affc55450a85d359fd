@@ -1,0 +1,7 @@
+Code-Review+2: wes hayutin <weshayutin@gmail.com>
+Verified+1: wes hayutin <weshayutin@gmail.com>
+Submitted-by: wes hayutin <weshayutin@gmail.com>
+Submitted-at: Mon, 06 Jun 2016 11:27:52 -0400
+Reviewed-on: https://review.gerrithub.io/278603
+Project: redhat-openstack/ansible-role-tripleo-inventory
+Branch: refs/heads/master
