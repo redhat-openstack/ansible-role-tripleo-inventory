@@ -25,17 +25,26 @@ Host virthost
 
 {% endif %}
 
-
 Host undercloud-root
+{% if undercloud_setup == 'virtual' %}
     ProxyCommand {{ undercloud_ssh_proxy_command }}
     IdentityFile {{ local_working_dir }}/id_rsa_undercloud
+{% else %}
+    Hostname {{ undercloud_ip.stdout }}
+    IdentityFile {{ local_working_dir }}/id_rsa_virt_host
+{% endif %}
     User root
     StrictHostKeyChecking no
     UserKnownHostsFile=/dev/null
 
 Host undercloud
+{% if undercloud_setup == 'virtual' %}
     ProxyCommand {{ undercloud_ssh_proxy_command }}
     IdentityFile {{ local_working_dir }}/id_rsa_undercloud
+{% else %}
+    Hostname {{ undercloud_ip.stdout }}
+    IdentityFile {{ local_working_dir }}/id_rsa_virt_host
+{% endif %}
     User stack
     StrictHostKeyChecking no
     UserKnownHostsFile=/dev/null
