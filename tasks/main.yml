@@ -81,6 +81,16 @@
 - name: set_fact for undercloud ip
   set_fact: undercloud_ip={{ hostvars['undercloud'].undercloud_ip }}
 
+#readd the undercloud to reset the ansible_ssh parameters set in quickstart
+- name: Add undercloud vm to inventory
+  add_host:
+    name: undercloud
+    groups: undercloud
+    ansible_host: undercloud
+    ansible_fqdn: undercloud
+    ansible_user: stack
+    undercloud_ip: "{{ undercloud_ip }}"
+
 #required for regeneration of ssh.config.ansible
 - name: set undercloud ssh proxy command
   set_fact: undercloud_ssh_proxy_command="ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no
