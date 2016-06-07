@@ -89,7 +89,10 @@
     ansible_host: undercloud
     ansible_fqdn: undercloud
     ansible_user: stack
+    ansible_private_key_file: "{{ local_working_dir }}/id_rsa_undercloud"
+    ansible_ssh_extra_args: '-F "{{ local_working_dir }}/ssh.config.local.ansible"'
     undercloud_ip: "{{ undercloud_ip }}"
+  when: hostvars[groups['virthost'][0]].ansible_private_key_file is not defined
 
 #required for regeneration of ssh.config.ansible
 - name: set undercloud ssh proxy command
