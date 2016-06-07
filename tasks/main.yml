@@ -114,18 +114,3 @@
   template: >
     src=ssh_config_localhost.j2
     dest={{ local_working_dir }}/ssh.config.local.ansible mode=0755
-
-#used when virthost == localhost
-- name: transfer the ssh keys to the virthost
-  shell: "scp -F {{ local_working_dir }}/ssh.config.ansible {{ local_working_dir }}/id_rsa_* virthost:{{ working_dir }}"
-  delegate_to: localhost
-
-#used when virthost == localhost
-- name: transfer the ssh config to the virthost
-  shell: "scp -F {{ local_working_dir }}/ssh.config.ansible {{ local_working_dir }}/ssh.config.* virthost:{{ working_dir }}"
-  delegate_to: localhost
-
-#used when virthost == localhost
-- name: transfer the ansible hosts file to the virthost
-  shell: "scp -F {{ local_working_dir }}/ssh.config.ansible {{ local_working_dir }}/hosts virthost:{{ working_dir }}"
-  delegate_to: localhost
