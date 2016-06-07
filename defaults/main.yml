@@ -5,4 +5,4 @@ working_dir: /home/stack
 ansible_user: stack
 undercloud_key: "{{ local_working_dir }}/id_rsa_undercloud"
 inventory: undercloud
-
+undercloud_type: virtual
