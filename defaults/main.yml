@@ -4,4 +4,4 @@ local_working_dir: "{{ lookup('env', 'HOME') }}/.cat"
 working_dir: /home/stack
 ansible_user: stack
 undercloud_key: "{{ local_working_dir }}/id_rsa_undercloud"
-
+undercloud_setup: virtual
