@@ -127,3 +127,4 @@
   template: >
     src=ssh_config_localhost.j2
     dest={{ local_working_dir }}/ssh.config.local.ansible mode=0755
+  when: hostvars['localhost'].   is defined
