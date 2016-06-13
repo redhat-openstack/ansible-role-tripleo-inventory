@@ -1,7 +1,8 @@
 ---
 # defaults file for ansible-role-tripleo-inventory
-local_working_dir: "{{ lookup('env', 'HOME') }}/.cat"
+local_working_dir: "{{ lookup('env', 'HOME') }}/.quickstart"
 working_dir: /home/stack
 ansible_user: stack
 undercloud_key: "{{ local_working_dir }}/id_rsa_undercloud"
+inventory: undercloud
 

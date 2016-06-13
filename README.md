@@ -1,38 +1,48 @@
-Role Name
-=========
+ansible-role-tripleo-inventory
+==============================
 
-A brief description of the role goes here.
+Creates a new inventory file for Ansible from the hosts in memory. This allows
+consecutive runs of Ansible with the same set of hosts.
 
 Requirements
 ------------
 
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
+None.
 
 Role Variables
 --------------
 
-A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
+* `local_working_dir` -- working directory on the slave running the playbook,
+  defaults to `$HOME/.quickstart`
+* `working_dir` -- working directory on the virthost, default to /home/stack
+* `undercloud_key` -- ssh key used to access the undercloud machine
+* `inventory` -- `undercloud` if the overcloud has not been deployed yet
+  (default), or `full` in case we want to inventory all the hosts
 
 Dependencies
 ------------
 
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
+None.
 
 Example Playbook
 ----------------
 
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
-
-    - hosts: servers
-      roles:
-         - { role: username.rolename, x: 42 }
+```yaml
+- name:  Inventory the overcloud
+  hosts: undercloud
+  gather_facts: yes
+  vars:
+      inventory: all
+  roles:
+    - tripleo-inventory
+```
 
 License
 -------
 
-BSD
+Apache
 
 Author Information
 ------------------
 
-An optional section for the role authors to include contact information, or a website (HTML is not allowed).
+RDO-CI Team
