@@ -1,0 +1,165 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "baa041b7_d27b8228",
+        "filename": "templates/inventory.j2",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1001800
+      },
+      "writtenOn": "2016-06-13T14:23:58Z",
+      "side": 1,
+      "message": "remove",
+      "range": {
+        "startLine": 7,
+        "startChar": 90,
+        "endLine": 7,
+        "endChar": 91
+      },
+      "revId": "80ac02b35630cacd84c0db2567aa91d4e6655d65",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "baa041b7_1281eafb",
+        "filename": "templates/inventory.j2",
+        "patchSetId": 1
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 1001800
+      },
+      "writtenOn": "2016-06-13T14:23:58Z",
+      "side": 1,
+      "message": "remove",
+      "range": {
+        "startLine": 8,
+        "startChar": 41,
+        "endLine": 8,
+        "endChar": 42
+      },
+      "revId": "80ac02b35630cacd84c0db2567aa91d4e6655d65",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "baa041b7_f2856607",
+        "filename": "templates/inventory.j2",
+        "patchSetId": 1
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 1001800
+      },
+      "writtenOn": "2016-06-13T14:23:58Z",
+      "side": 1,
+      "message": "remove",
+      "range": {
+        "startLine": 8,
+        "startChar": 91,
+        "endLine": 8,
+        "endChar": 92
+      },
+      "revId": "80ac02b35630cacd84c0db2567aa91d4e6655d65",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "baa041b7_9275fa33",
+        "filename": "templates/inventory.j2",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1001800
+      },
+      "writtenOn": "2016-06-13T14:23:58Z",
+      "side": 1,
+      "message": "remove",
+      "range": {
+        "startLine": 9,
+        "startChar": 53,
+        "endLine": 9,
+        "endChar": 54
+      },
+      "revId": "80ac02b35630cacd84c0db2567aa91d4e6655d65",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "baa041b7_7272764b",
+        "filename": "templates/inventory.j2",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1001800
+      },
+      "writtenOn": "2016-06-13T14:23:58Z",
+      "side": 1,
+      "message": "remove",
+      "range": {
+        "startLine": 9,
+        "startChar": 127,
+        "endLine": 9,
+        "endChar": 128
+      },
+      "revId": "80ac02b35630cacd84c0db2567aa91d4e6655d65",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "baa041b7_3293ce51",
+        "filename": "templates/inventory.j2",
+        "patchSetId": 1
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1001800
+      },
+      "writtenOn": "2016-06-13T14:23:58Z",
+      "side": 1,
+      "message": "remove",
+      "range": {
+        "startLine": 10,
+        "startChar": 94,
+        "endLine": 10,
+        "endChar": 95
+      },
+      "revId": "80ac02b35630cacd84c0db2567aa91d4e6655d65",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "baa041b7_528e5228",
+        "filename": "templates/inventory.j2",
+        "patchSetId": 1
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1001800
+      },
+      "writtenOn": "2016-06-13T14:23:58Z",
+      "side": 1,
+      "message": "remove",
+      "range": {
+        "startLine": 10,
+        "startChar": 42,
+        "endLine": 10,
+        "endChar": 43
+      },
+      "revId": "80ac02b35630cacd84c0db2567aa91d4e6655d65",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    }
+  ]
+}
