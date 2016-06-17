@@ -7,81 +7,43 @@
   delegate_facts: True
   when: hostvars['localhost'].ansible_user_dir is not defined
 
-#required for liberty based deployments
-- name: copy get-overcloud-nodes.py to undercloud
-  template: >
-      src=get-overcloud-nodes.py.j2
-      dest={{ working_dir }}/get-overcloud-nodes.py
-      mode=0755
-  when: inventory == "all"
+- when: inventory == 'all'
+  block:
+    #required for liberty based deployments
+    - name: copy get-overcloud-nodes.py to undercloud
+      template:
+        src: 'get-overcloud-nodes.py.j2'
+        dest: '{{ working_dir }}/get-overcloud-nodes.py'
+        mode: 0755
 
-#required for liberty based deployments
-- name: fetch overcloud node names and IPs
-  shell: >
-      source {{ working_dir }}/stackrc;
-      python {{ working_dir }}/get-overcloud-nodes.py
-  register: registered_overcloud_nodes
-  when: inventory == "all"
+    #required for liberty based deployments
+    - name: fetch overcloud node names and IPs
+      shell: >
+          source {{ working_dir }}/stackrc;
+          python {{ working_dir }}/get-overcloud-nodes.py
+      register: registered_overcloud_nodes
 
-- name: list the overcloud nodes
-  debug: var=registered_overcloud_nodes.stdout
-  when: inventory == "all"
+    - name: list the overcloud nodes
+      debug: var=registered_overcloud_nodes.stdout
 
-- name: fetch the undercloud ssh key
-  fetch: >
-    src={{ working_dir }}/.ssh/id_rsa
-    dest={{ local_working_dir }}/id_rsa_overcloud
-    flat=yes
-    mode=0400
-  when: inventory == "all"
+    - name: fetch the undercloud ssh key
+      fetch:
+        src: '{{ working_dir }}/.ssh/id_rsa'
+        dest: '{{ local_working_dir }}/id_rsa_overcloud'
+        flat: yes
+        mode: 0400
 
-- name: add each overcloud controller node to ansible
-  with_dict: registered_overcloud_nodes.stdout
-  ignore_errors: yes
-  add_host:
-    name={{ item.key }}
-    groups=overcloud,controller
-    ansible_host={{ item.key }}
-    ansible_fqdn={{ item.value }}
-    ansible_user="heat-admin"
-    ansible_private_key_file="{{ lookup('env', 'PWD') }}/id_rsa_overcloud"
-  when: item.key.startswith('overcloud-controller') and inventory == "all"
-
-- name: add each overcloud compute node to ansible
-  with_dict: registered_overcloud_nodes.stdout
-  ignore_errors: yes
-  add_host:
-    name={{ item.key }}
-    groups=overcloud,compute
-    ansible_host={{ item.key }}
-    ansible_fqdn={{ item.value }}
-    ansible_user="heat-admin"
-    ansible_private_key_file="{{ lookup('env', 'PWD') }}/id_rsa_overcloud"
-  when: item.key.startswith('overcloud-compute') or item.key.startswith('overcloud-novacompute') and inventory == "all"
-
-- name: add each overcloud ceph node to ansible
-  with_dict: registered_overcloud_nodes.stdout
-  ignore_errors: yes
-  add_host:
-    name={{ item.key }}
-    groups=overcloud,ceph
-    ansible_host={{ item.key }}
-    ansible_fqdn={{ item.value }}
-    ansible_user="heat-admin"
-    ansible_private_key_file="{{ lookup('env', 'PWD') }}/id_rsa_overcloud"
-  when: item.key.startswith('overcloud-ceph') and inventory == "all"
-
-- name: add each overcloud swift node to ansible
-  with_dict: registered_overcloud_nodes.stdout
-  ignore_errors: yes
-  add_host:
-    name={{ item.key }}
-    groups=overcloud,swift
-    ansible_host={{ item.key }}
-    ansible_fqdn={{ item.value }}
-    ansible_user="heat-admin"
-    ansible_private_key_file="{{ lookup('env', 'PWD') }}/id_rsa_overcloud"
-  when: item.key.startswith('overcloud-objectstorage') and inventory == "all"
+    # add host to the ansible group formed from its type
+    # novacompute nodes are added as compute for backwards compatibility
+    - name: add overcloud node to ansible
+      with_dict: '{{ registered_overcloud_nodes.stdout | default({}) }}'
+      add_host:
+        name: '{{ item.key }}'
+        groups: "overcloud,{{ item.key | regex_replace('overcloud-(?:nova)?([a-zA-Z0-9_]+)-[0-9]+$', '\\1') }}"
+        ansible_host: '{{ item.key }}'
+        ansible_fqdn: '{{ item.value }}'
+        ansible_user: 'heat-admin'
+        ansible_private_key_file: "{{ lookup('env', 'PWD') }}/id_rsa_overcloud"
 
 #required for regeneration of ssh.config.ansible
 - name: set_fact for undercloud ip
@@ -96,7 +58,7 @@
     ansible_host: undercloud
     ansible_fqdn: undercloud
     ansible_user: stack
-    ansible_private_key_file: "{{ local_working_dir }}/id_rsa_undercloud"
+    ansible_private_key_file: '{{ local_working_dir }}/id_rsa_undercloud'
     ansible_ssh_extra_args: '-F "{{ local_working_dir }}/ssh.config.local.ansible"'
     undercloud_ip: "{{ undercloud_ip }}"
   when: hostvars[groups['virthost'][0]].ansible_private_key_file is not defined and undercloud_ip is defined
@@ -119,22 +81,24 @@
 
 - name: create inventory from template
   delegate_to: localhost
-  template: >
-    src=inventory.j2
-    dest="{{ local_working_dir }}/hosts"
+  template:
+    src: 'inventory.j2'
+    dest: '{{ local_working_dir }}/hosts'
 
 - name: regenerate ssh config
   delegate_to: localhost
-  template: >
-    src=ssh_config.j2
-    dest={{ local_working_dir }}/ssh.config.ansible mode=0755
+  template:
+    src: 'ssh_config.j2'
+    dest: '{{ local_working_dir }}/ssh.config.ansible'
+    mode: 0755
   when: undercloud_ip is defined
 
 - name: regenerate ssh config for ssh connections from the virthost
   delegate_to: localhost
-  template: >
-    src=ssh_config_localhost.j2
-    dest={{ local_working_dir }}/ssh.config.local.ansible mode=0755
+  template:
+    src: 'ssh_config_localhost.j2'
+    dest: '{{ local_working_dir }}/ssh.config.local.ansible'
+    mode: 0755
   when: undercloud_ip is defined
 
 # just setup the ssh.config.ansible and hosts file for the virthost
@@ -151,7 +115,8 @@
 
 - name: regenerate ssh config, if no undercloud has been launched.
   delegate_to: localhost
-  template: >
-    src=ssh_config_no_undercloud.j2
-    dest={{ local_working_dir }}/ssh.config.ansible mode=0755
+  template:
+    src: 'ssh_config_no_undercloud.j2'
+    dest: '{{ local_working_dir }}/ssh.config.ansible'
+    mode: 0755
   when: undercloud_ip is not defined
