@@ -86,6 +86,7 @@
 #required for regeneration of ssh.config.ansible
 - name: set_fact for undercloud ip
   set_fact: undercloud_ip={{ hostvars['undercloud'].undercloud_ip }}
+  when: hostvars['undercloud'] is defined and hostvars['undercloud'].undercloud_ip is defined
 
 #readd the undercloud to reset the ansible_ssh parameters set in quickstart
 - name: Add undercloud vm to inventory
@@ -98,7 +99,7 @@
     ansible_private_key_file: "{{ local_working_dir }}/id_rsa_undercloud"
     ansible_ssh_extra_args: '-F "{{ local_working_dir }}/ssh.config.local.ansible"'
     undercloud_ip: "{{ undercloud_ip }}"
-  when: hostvars[groups['virthost'][0]].ansible_private_key_file is not defined
+  when: hostvars[groups['virthost'][0]].ansible_private_key_file is not defined and undercloud_ip is defined
 
 #required for regeneration of ssh.config.ansible
 - name: set undercloud ssh proxy command
@@ -106,7 +107,7 @@
       -o ConnectTimeout=60 -i {{ hostvars[groups['virthost'][0]].ansible_private_key_file }}
       {{ ansible_user }}@{{ hostvars[groups['virthost'][0]].ansible_host }}
       -W {{ undercloud_ip }}:22"
-  when: hostvars[groups['virthost'][0]].ansible_private_key_file is defined
+  when: hostvars[groups['virthost'][0]].ansible_private_key_file is defined and undercloud_ip is defined
 
 #required for regeneration of ssh.config.ansible
 - name: set undercloud ssh proxy command
@@ -114,7 +115,7 @@
       -o ConnectTimeout=60 -i {{ hostvars['localhost'].ansible_user_dir }}/.quickstart/id_rsa_virt_power
       {{ ansible_user }}@{{ hostvars['localhost'].ansible_default_ipv4.address }}
       -W {{ undercloud_ip }}:22"
-  when: hostvars[groups['virthost'][0]].ansible_private_key_file is not defined
+  when: hostvars[groups['virthost'][0]].ansible_private_key_file is not defined and undercloud_ip is defined
 
 - name: create inventory from template
   delegate_to: localhost
