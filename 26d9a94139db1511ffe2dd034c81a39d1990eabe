@@ -1,0 +1,7 @@
+Verified+1: <openstack-ci-service+rdo-ci-centos@redhat.com>
+Code-Review+2: wes hayutin <weshayutin@gmail.com>
+Submitted-by: wes hayutin <weshayutin@gmail.com>
+Submitted-at: Tue, 21 Jun 2016 10:25:32 -0400
+Reviewed-on: https://review.gerrithub.io/280849
+Project: redhat-openstack/ansible-role-tripleo-inventory
+Branch: refs/heads/master
