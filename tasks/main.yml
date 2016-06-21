@@ -43,7 +43,7 @@
         ansible_host: '{{ item.key }}'
         ansible_fqdn: '{{ item.value }}'
         ansible_user: 'heat-admin'
-        ansible_private_key_file: "{{ lookup('env', 'PWD') }}/id_rsa_overcloud"
+        ansible_private_key_file: "{{ local_working_dir }}/id_rsa_overcloud"
 
 #required for regeneration of ssh.config.ansible
 - name: set_fact for undercloud ip
