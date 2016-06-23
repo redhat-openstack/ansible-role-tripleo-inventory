@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "baa041b7_44af85e3",
+        "filename": "templates/ssh_config.j2",
+        "patchSetId": 6
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 1001800
+      },
+      "writtenOn": "2016-06-23T14:32:12Z",
+      "side": 1,
+      "message": "I think it would be more logical to call this variable `undercloud_type`, setup is a bit overloaded term. Also maybe we should start namespacing the variables here by `arti_` to avoid variable collisions.\n\nAlso please add a description of the new variable to README.md",
+      "range": {
+        "startLine": 29,
+        "startChar": 6,
+        "endLine": 29,
+        "endChar": 22
+      },
+      "revId": "1c71dbfadf24e6ff971f91641d42aef4f47dec0d",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "baa041b7_e4b57931",
+        "filename": "templates/ssh_config.j2",
+        "patchSetId": 6
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 1001800
+      },
+      "writtenOn": "2016-06-23T14:32:12Z",
+      "side": 1,
+      "message": "We should still use id_rsa_undercloud here. If it\u0027s not available/correct then we should change some other roles, as this will cause confusion later on in the baremetal case, when there\u0027s no virthost.",
+      "range": {
+        "startLine": 34,
+        "startChar": 41,
+        "endLine": 34,
+        "endChar": 57
+      },
+      "revId": "1c71dbfadf24e6ff971f91641d42aef4f47dec0d",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "baa041b7_c481554f",
+        "filename": "templates/ssh_config.j2",
+        "patchSetId": 6
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 1001800
+      },
+      "writtenOn": "2016-06-23T14:32:12Z",
+      "side": 1,
+      "message": "same as above",
+      "range": {
+        "startLine": 41,
+        "startChar": 6,
+        "endLine": 41,
+        "endChar": 22
+      },
+      "revId": "1c71dbfadf24e6ff971f91641d42aef4f47dec0d",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "baa041b7_a4865163",
+        "filename": "templates/ssh_config.j2",
+        "patchSetId": 6
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 1001800
+      },
+      "writtenOn": "2016-06-23T14:32:12Z",
+      "side": 1,
+      "message": "same as above",
+      "range": {
+        "startLine": 46,
+        "startChar": 41,
+        "endLine": 46,
+        "endChar": 57
+      },
+      "revId": "1c71dbfadf24e6ff971f91641d42aef4f47dec0d",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    }
+  ]
+}
