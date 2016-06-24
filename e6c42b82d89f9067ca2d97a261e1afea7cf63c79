@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "baa041b7_b820b14a",
+        "filename": "templates/ssh_config.j2",
+        "patchSetId": 8
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 1008204
+      },
+      "writtenOn": "2016-06-24T14:29:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "baa041b7_5f0d0e36",
+      "range": {
+        "startLine": 34,
+        "startChar": 4,
+        "endLine": 34,
+        "endChar": 58
+      },
+      "revId": "e6c42b82d89f9067ca2d97a261e1afea7cf63c79",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "baa041b7_3f136a5e",
         "filename": "templates/ssh_config.j2",
         "patchSetId": 8
@@ -36,6 +60,30 @@
       "writtenOn": "2016-06-23T16:11:05Z",
       "side": 1,
       "message": "same",
+      "range": {
+        "startLine": 43,
+        "startChar": 4,
+        "endLine": 43,
+        "endChar": 58
+      },
+      "revId": "e6c42b82d89f9067ca2d97a261e1afea7cf63c79",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "baa041b7_781a2919",
+        "filename": "templates/ssh_config.j2",
+        "patchSetId": 8
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 1008204
+      },
+      "writtenOn": "2016-06-24T14:29:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "baa041b7_3f136a5e",
       "range": {
         "startLine": 43,
         "startChar": 4,
