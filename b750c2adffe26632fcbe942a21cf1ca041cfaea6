@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "baa041b7_b34b2759",
+        "filename": "templates/ssh_config_localhost.j2",
+        "patchSetId": 2
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1000777
+      },
+      "writtenOn": "2016-06-27T20:59:21Z",
+      "side": 1,
+      "message": "duplicate option here",
+      "revId": "b750c2adffe26632fcbe942a21cf1ca041cfaea6",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "baa041b7_9346e34d",
+        "filename": "templates/ssh_config_localhost.j2",
+        "patchSetId": 2
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1000777
+      },
+      "writtenOn": "2016-06-27T20:59:21Z",
+      "side": 1,
+      "message": "duplicate option here",
+      "revId": "b750c2adffe26632fcbe942a21cf1ca041cfaea6",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    }
+  ]
+}
