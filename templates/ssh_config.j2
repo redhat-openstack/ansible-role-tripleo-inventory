@@ -13,6 +13,7 @@ Host virthost
     User {{ ansible_user }}
     StrictHostKeyChecking no
     UserKnownHostsFile=/dev/null
+    IdentitiesOnly yes
 
 {% else %}
 
@@ -22,6 +23,7 @@ Host virthost
     User {{ ansible_user }}
     StrictHostKeyChecking no
     UserKnownHostsFile=/dev/null
+    IdentitiesOnly yes
 
 {% endif %}
 
@@ -32,6 +34,7 @@ Host undercloud-root
     User root
     StrictHostKeyChecking no
     UserKnownHostsFile=/dev/null
+    IdentitiesOnly yes
 
 Host undercloud
     ProxyCommand {{ undercloud_ssh_proxy_command }}
@@ -39,6 +42,7 @@ Host undercloud
     User stack
     StrictHostKeyChecking no
     UserKnownHostsFile=/dev/null
+    IdentitiesOnly yes
 
 {% if groups["overcloud"] is defined %}
 {% for host in groups["overcloud"] %}
@@ -49,6 +53,7 @@ Host {{ host }}
     User heat-admin
     StrictHostKeyChecking no
     UserKnownHostsFile=/dev/null
+    IdentitiesOnly yes
 
 {% endfor %}
 {% endif %}

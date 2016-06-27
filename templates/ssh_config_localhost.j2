@@ -12,6 +12,7 @@ Host undercloud-root
     IdentitiesOnly yes
     User root
     StrictHostKeyChecking no
+    IdentitiesOnly yes
 
 Host undercloud
     Hostname {{ undercloud_ip }}
@@ -19,6 +20,7 @@ Host undercloud
     IdentitiesOnly yes
     User stack
     StrictHostKeyChecking no
+    IdentitiesOnly yes
 
 
 {% if groups["overcloud"] is defined %}
@@ -31,6 +33,7 @@ Host {{ host }}
     User heat-admin
     StrictHostKeyChecking no
     UserKnownHostsFile=/dev/null
+    IdentitiesOnly yes
 
 {% endfor %}
 {% endif %}
