@@ -15,6 +15,7 @@ Host virthost
     User {{ ansible_user }}
     StrictHostKeyChecking no
     UserKnownHostsFile=/dev/null
+    IdentitiesOnly yes
 
 {% else %}
 
@@ -26,6 +27,7 @@ Host virthost
     User {{ ansible_user }}
     StrictHostKeyChecking no
     UserKnownHostsFile=/dev/null
+    IdentitiesOnly yes
 
 {% endif %}
 
