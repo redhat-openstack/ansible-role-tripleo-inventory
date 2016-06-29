@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "baa041b7_7f967995",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1000777
+      },
+      "writtenOn": "2016-06-29T13:47:24Z",
+      "side": 1,
+      "message": "nit: Identities",
+      "revId": "6f8e4ff469711e7e5d529b50fffbcd32b2c7d6fd",
+      "serverId": "d5d70762-12d0-45a1-890d-524b12d3f735",
+      "unresolved": false
+    }
+  ]
+}
