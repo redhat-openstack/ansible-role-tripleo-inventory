@@ -91,7 +91,15 @@
     src: 'ssh_config.j2'
     dest: '{{ local_working_dir }}/ssh.config.ansible'
     mode: 0755
-  when: undercloud_ip is defined
+  when: undercloud_ip is defined and undercloud_type != "ovb"
+
+- name: regenerate ssh config for ovb
+  delegate_to: localhost
+  template:
+    src: 'ssh_config_localhost.j2'
+    dest: '{{ local_working_dir }}/ssh.config.ansible'
+    mode: 0755
+  when: undercloud_ip is defined and undercloud_type == "ovb"
 
 - name: regenerate ssh config for ssh connections from the virthost
   delegate_to: localhost
