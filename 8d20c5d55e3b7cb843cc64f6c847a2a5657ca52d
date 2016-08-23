@@ -1,0 +1,10 @@
+Code-Review+1: Raoul Scarazzini <rscarazz@redhat.com>
+Code-Review+1: Attila Darazs <adarazs@redhat.com>
+Verified+1: <openstack-ci-service+rdo-ci-centos@redhat.com>
+Code-Review+1: Swapnil Kulkarni <me@coolsvap.net>
+Code-Review+2: mathieu bultel <mat.bultel@gmail.com>
+Submitted-by: mathieu bultel <mat.bultel@gmail.com>
+Submitted-at: Tue, 23 Aug 2016 15:28:58 -0400
+Reviewed-on: https://review.gerrithub.io/288552
+Project: redhat-openstack/ansible-role-tripleo-inventory
+Branch: refs/heads/master
